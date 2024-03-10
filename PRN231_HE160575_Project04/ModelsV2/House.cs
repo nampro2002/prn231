@@ -25,9 +25,9 @@ namespace PRN231_HE160575_Project04.ModelsV2
         public int Rate { get; set; }
         public DateTime PublicDay { get; set; }
         public int UserId { get; set; }
-        public string? DistrictCode { get; set; }
-        public string? ProvinceCode { get; set; }
-        public string? WardCode { get; set; }
+        public string DistrictCode { get; set; }
+        public string ProvinceCode { get; set; }
+        public string WardCode { get; set; }
 
         public virtual District? DistrictCodeNavigation { get; set; }
         public virtual Province? ProvinceCodeNavigation { get; set; }

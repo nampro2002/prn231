@@ -19,11 +19,22 @@
         <!-- Profile Tab -->
 
         <div id="profile-tab" class="tab-content">
-            <form method="post" >
+            <form method="post">
                 <img id="Avatar" src="@Model.user.Avatar" alt="User Avatar" class="avatar">
                 <input id="fileInput" type="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
                 <input hidden id="AvatarInput" type="text" asp-for="@Model.user.Avatar" readonly>
-               
+                <script>
+                    function encodeImageFileAsURL(element) {
+                        var file = element.files[0];
+                        var reader = new FileReader();
+                        reader.onloadend = function () {
+                            console.log('Encoded image base64 string:', reader.result);
+                            $('#Avatar').attr('src', reader.result);
+                            $('#AvatarInput').val(reader.result);
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                </script>
                 <div class="verification-status">
                     <button class="verification-status @(Model.user.IsVerified ? "verified" : "unverified")" type="submit" asp-page-handler="Verify">Verified</button>
                 </div>
@@ -71,26 +82,26 @@
                     Địa chỉ nhà:
                     <input type="text" asp-for=@Model.user.Address />
                 </label>
-                <button type="submit" asp-page-handler="Update"  >Update</button>
+                <button type="submit" asp-page-handler="Update">Update</button>
             </form>
         </div>
 
         <!-- Password Tab -->
         <div id="password-tab" class="tab-content" style="display: none;">
-            <form method="post" >
-            <label>
-                Mật khẩu hiện tại:
+            <form method="post">
+                <label>
+                    Mật khẩu hiện tại:
                     <input type="password" asp-for=@Model.updatePasswordRequest.currentPassword>
-            </label>
-            <label>
-                Mật khẩu mới:
+                </label>
+                <label>
+                    Mật khẩu mới:
                     <input type="password" asp-for=@Model.updatePasswordRequest.newPassword>
-            </label>
-            <label>
-                Xác nhận mật khẩu mới:
+                </label>
+                <label>
+                    Xác nhận mật khẩu mới:
                     <input type="password" asp-for=@Model.updatePasswordRequest.confirmPassword>
-            </label>
-                <button type="submit" asp-page-handler="UpdatePassword" >Update Password</button>
+                </label>
+                <button type="submit" asp-page-handler="UpdatePassword">Update Password</button>
             </form>
         </div>
 
@@ -109,17 +120,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                        @foreach (var item in Model.bookingHistory)                    
-                        {
-                            <tr>
-                                <td>@item.BookingId</td>
-                                <td>@item.UserId</td>
-                                <td>@item.HouseId</td>
-                                <td>@item.BookingDate</td>
-                                <td>@item.ExpirationDate</td>
-                                <td><button onclick="handleDetail(@item.BookingId)">Detail</button></td>
-                            </tr>
-                        }                    
+                    @foreach (var item in Model.bookingHistory)
+                    {
+                        <tr>
+                            <td>@item.BookingId</td>
+                            <td>@item.UserId</td>
+                            <td>@item.HouseId</td>
+                            <td>@item.BookingDate</td>
+                            <td>@item.ExpirationDate</td>
+                            <td><button onclick="handleDetail(@item.BookingId)">Detail</button></td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
