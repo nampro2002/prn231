@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace PRN231_HE160575_Project04_Client.ModelsV2
 {
@@ -22,7 +23,7 @@ namespace PRN231_HE160575_Project04_Client.ModelsV2
         public bool? IsActived { get; set; }
         public bool? IsVerified { get; set; }
         public double Balance { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<House> Houses { get; set; }
     }
 }

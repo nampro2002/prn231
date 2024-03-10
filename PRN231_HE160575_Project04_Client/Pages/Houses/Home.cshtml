@@ -3,137 +3,204 @@
 @{
 }
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<!-- Thêm thẻ script để tải Lodash từ CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <div class="container mt-3">
     <div class="row">
-
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="city">Thành phố</label>
-                <form id="provinceForm" method="post" asp-page-handler="GetDistricts">
-                    <select class="form-control" id="citySelect" onchange="updateSearchHouseProvinceCode()">
+        <form method="post">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="city">Thành phố</label>
+                    <select class="form-control" id="citySelect" asp-for="@Model.SearchHouse.ProvinceCode" onchange="LocationChange()">
                         <option value="">Chọn tỉnh thành</option>
                         @foreach (var item in Model.provinces)
                         {
-                            if (!string.IsNullOrEmpty(PRN231_HE160575_Project04_Client.Pages.Houses.HomeModel.SearchHouse.ProvinceCode))
-                            {
-                                if (item.Code.Equals(PRN231_HE160575_Project04_Client.Pages.Houses.HomeModel.SearchHouse.ProvinceCode))
-                                {
-                                    <option selected value="@item.Code">@item.Name</option>
-                                }
-                            }
                             <option value="@item.Code">@item.Name</option>
                         }
                     </select>
-                    <input id="SearchHouseProvinceCode" name="selectedProvinceCode" hidden></input>
-                    <script>
-                        function updateSearchHouseProvinceCode() {
-                            var selectElement = document.getElementById("citySelect");
-                            var selectedProvinceCode = selectElement.value;
-                            document.getElementById("SearchHouseProvinceCode").value = selectedProvinceCode;
-                            document.getElementById("provinceForm").submit();
-                        }
-                    </script>
-                </form>
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="district">Quận</label>
-                <form id="districtsForm" method="post" asp-page-handler="GetAllWards">
-                    <select class="form-control" id="districtSelect" onchange="updateSelectedDistrictCode()">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="district">Quận</label>
+                    <select class="form-control" id="districtSelect" asp-for="@Model.SearchHouse.DistrictCode" onchange="LocationChange()">
                         <option value="">Chọn Quận</option>
                         @foreach (var item in Model.districts)
                         {
-                            if (!string.IsNullOrEmpty(PRN231_HE160575_Project04_Client.Pages.Houses.HomeModel.SearchHouse.DistrictCode))
-                            {
-                                if (item.Code.Equals(PRN231_HE160575_Project04_Client.Pages.Houses.HomeModel.SearchHouse.DistrictCode))
-                                {
-                                    <option selected value="@item.Code">@item.Name</option>
-                                }
-                            }
                             <option value="@item.Code">@item.Name</option>
                         }
                     </select>
-                    <input id="SelectedDistrictCode" name="SelectedDistrictCode" hidden />
-                    <script>
-                        function updateSelectedDistrictCode() {
-                            var selectElement = document.getElementById("districtSelect");
-                            var selectedProvinceCode = selectElement.value;
-                            document.getElementById("SelectedDistrictCode").value = selectedProvinceCode;
-                            document.getElementById("districtsForm").submit();
-                        }
-                    </script>
-                </form>
-
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="district">Phường/Xã</label>
-                <form id="wardsForm" method="post" asp-page-handler="SetWard">
-                    <select class="form-control" id="wardSelect" onchange="updateSelectedWardCode()">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="district">Phường/Xã</label>
+                    <select class="form-control" id="wardSelect" asp-for="@Model.SearchHouse.WardCode" onchange="">
                         <option value="">Chọn Phường/Xã</option>
                         @foreach (var item in Model.wards)
                         {
-                            if (!string.IsNullOrEmpty(PRN231_HE160575_Project04_Client.Pages.Houses.HomeModel.SearchHouse.WardCode))
-                            {
-                                if (item.Code.Equals(PRN231_HE160575_Project04_Client.Pages.Houses.HomeModel.SearchHouse.WardCode))
-                                {
-                                    <option selected value="@item.Code">@item.Name</option>
-                                }
-                            }
                             <option value="@item.Code">@item.Name</option>
                         }
                     </select>
-                    <input id="SelectedWardCode" name="SelectedWardCode" hidden />
-                    <script>
-                        function updateSelectedWardCode() {
-                            var selectElement = document.getElementById("wardSelect");
-                            var selectedProvinceCode = selectElement.value;
-                            document.getElementById("SelectedWardCode").value = selectedProvinceCode;
-                            document.getElementById("wardsForm").submit();
+                </div>
+            </div>
+            <script>
+                function LocationChange() {
+                    var city = @Html.Raw(Json.Serialize(Model.provinces));
+                    var district = @Html.Raw(Json.Serialize(Model.districts));
+                    var ward = @Html.Raw(Json.Serialize(Model.wards));
+
+                    var citySelect = document.getElementById("citySelect");
+                    var districtSelect = document.getElementById("districtSelect");
+                    var wardSelect = document.getElementById("wardSelect");
+
+                    for (var i = 0; i < districtSelect.options.length; i++) {
+                        var foundElement = _.find(district, { 'code': districtSelect.options[i].value.toString() });
+                        if (foundElement) {
+                            if (foundElement.provinceCode == citySelect.value) {
+                                districtSelect.options[i].style.display = "block";
+                            } else {
+                                districtSelect.options[i].style.display = "none";
+                            }
                         }
-                    </script>
-                </form>
-            </div>
-        </div>
+                    }
 
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="price-slider">Mức giá</label>
-                <input type="range" class="form-range" id="price-slider" @* value="@Model.Price" *@ @* @onchange="HandlePriceChange" *@>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <input type="number" class="form-control" placeholder="Giá thấp nhất">
-                </div>
-                <div class="col">
-                    <input type="number" class="form-control" placeholder="Giá cao nhất">
-                </div>
-            </div>
-        </div>
+                    for (var i = 0; i < wardSelect.options.length; i++) {
+                        var foundElement = _.find(ward, { 'code': wardSelect.options[i].value.toString() });
+                        if (foundElement) {
+                            if (foundElement.districtCode == districtSelect.value) {
+                                wardSelect.options[i].style.display = "block";
+                            } else {
+                                wardSelect.options[i].style.display = "none";
+                            }
+                        }
+                    }
 
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="area-slider">Diện tích</label>
-                <input type="range" class="form-range" id="area-slider" @* value="@Model.Area" *@ @* @onchange="HandleAreaChange" *@>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <input type="number" class="form-control" placeholder="Diện tích thấp nhất">
-                </div>
-                <div class="col">
-                    <input type="number" class="form-control" placeholder="Diện tích cao nhất">
-                </div>
-            </div>
-        </div>
+                }
+            </script>
+            
+            <div class="container mt-6">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="min-price-slider">Giá thấp nhất</label>
+                            <input type="range" class="form-range" id="min-price-slider" min="0" max="100000000">
+                        </div>
+                        <div class="form-group">
+                            <input type="number"   asp-for="@Model.SearchHouse.MinPrice" class="form-control" id="min-price-input" placeholder="Giá thấp nhất">
+                        </div>
 
-        <div class="col-md-12 mt-3">
-            <button type="button" class="btn btn-primary">Tìm kiếm</button>
-        </div>
+                        <div class="form-group">
+                            <label for="max-price-slider">Giá cao nhất</label>
+                            <input type="range" class="form-range" id="max-price-slider" min="0" max="100000000">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" asp-for="@Model.SearchHouse.MaxPrice" class="form-control" id="max-price-input" placeholder="Giá cao nhất">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                // Lấy các phần tử DOM
+                var minPriceSlider = document.getElementById("min-price-slider");
+                var maxPriceSlider = document.getElementById("max-price-slider");
+                var minPriceInput = document.getElementById("min-price-input");
+                var maxPriceInput = document.getElementById("max-price-input");
 
+                minPriceSlider.value = minPriceSlider.min;
+                maxPriceSlider.value = maxPriceSlider.max;
+                minPriceInput.value = minPriceSlider.min;
+                maxPriceInput.value = maxPriceSlider.max;
+
+                // Xử lý sự kiện khi giá trị trong ô input thấp nhất thay đổi
+                minPriceInput.oninput = function () {
+                    // Cập nhật giá trị của thanh trượt giá thấp nhất
+                    minPriceSlider.value = this.value;
+                };
+
+                // Xử lý sự kiện khi giá trị trong ô input cao nhất thay đổi
+                maxPriceInput.oninput = function () {
+                    // Cập nhật giá trị của thanh trượt giá cao nhất
+                    maxPriceSlider.value = this.value;
+                };
+
+                // Xử lý sự kiện khi giá trị của thanh trượt giá thấp nhất thay đổi
+                minPriceSlider.oninput = function () {
+                    // Cập nhật giá trị của ô input thấp nhất
+                    minPriceInput.value = this.value;
+                };
+
+                // Xử lý sự kiện khi giá trị của thanh trượt giá cao nhất thay đổi
+                maxPriceSlider.oninput = function () {
+                    // Cập nhật giá trị của ô input cao nhất
+                    maxPriceInput.value = this.value;
+                };
+            </script>
+         
+         
+            
+            <div class="container mt-6">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="min-slider">Diện tích thấp nhất</label>
+                            <input type="range" class="form-range" id="min-slider" min="0" max="100000000">
+                            <input type="number" asp-for="@Model.SearchHouse.MinArea" class="form-control mt-2" id="min-input" placeholder="Diện tích thấp nhất">
+                        </div>
+                        <div class="form-group">
+                            <label for="max-slider">Diện tích cao nhất</label>
+                            <input type="range" class="form-range" id="max-slider" min="0" max="100000000">
+                            <input type="number" asp-for="@Model.SearchHouse.MaxArea" class="form-control mt-2" id="max-input" placeholder="Diện tích cao nhất">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                // Lấy các phần tử DOM
+                var minSlider = document.getElementById("min-slider");
+                var maxSlider = document.getElementById("max-slider");
+                var minInput = document.getElementById("min-input");
+                var maxInput = document.getElementById("max-input");
+
+                // Thiết lập giá trị ban đầu cho input và slider
+                minSlider.value = minSlider.min;
+                maxSlider.value = maxSlider.max;
+                minInput.value = minSlider.min;
+                maxInput.value = maxSlider.max;
+
+                // Xử lý sự kiện khi giá trị thanh trượt thay đổi
+                minSlider.oninput = function () {
+                    // Cập nhật giá trị của ô input thấp nhất
+                    minInput.value = this.value;
+                };
+
+                maxSlider.oninput = function () {
+                    // Cập nhật giá trị của ô input cao nhất
+                    maxInput.value = this.value;
+                };
+
+                // Xử lý sự kiện khi giá trị trong ô input thay đổi
+                minInput.oninput = function () {
+                    // Cập nhật giá trị của thanh trượt thấp nhất
+                    minSlider.value = this.value;
+                };
+
+                maxInput.oninput = function () {
+                    // Cập nhật giá trị của thanh trượt cao nhất
+                    maxSlider.value = this.value;
+                };
+            </script>
+
+
+
+            <div class="col-md-12 mt-3">
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        </form>
         @foreach (var house in Model.houses)
         {
             <div class="col-md-4 mt-3">
@@ -163,7 +230,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @if ((Model.MessageResponse) != null)
 {

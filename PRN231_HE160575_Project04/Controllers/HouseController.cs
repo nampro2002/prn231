@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using PRN231_HE160575_Project04;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Microsoft.AspNetCore.OData.Query;
+using System.ComponentModel.DataAnnotations;
 using PRN231_HE160575_Project04.ModelsV2;
 
 namespace PRN231_HE160575_Project04.Controllers
@@ -19,29 +21,16 @@ namespace PRN231_HE160575_Project04.Controllers
             _context = context;
         }
         [HttpGet("GetAllHouses")]
+        [EnableQuery]
         public IActionResult GetAllHouses()
         {
-            var options = new JsonSerializerOptions
-            {
-                // Sử dụng ReferenceHandler.Preserve để duy trì các tham chiếu
-                ReferenceHandler = ReferenceHandler.Preserve,
-                // Đặt mức độ sâu tối đa của đối tượng trong chuỗi JSON
-                MaxDepth = 32 // Tùy chỉnh mức độ sâu theo nhu cầu của bạn
-            };
-            //List<House> h = _context.Houses
-            //    .Include(i => i.ProvinceCodeNavigation)
-            //    .Include(i => i.DistrictCodeNavigation)
-            //    .Include(i => i.WardCodeNavigation)
-            //    .Where(i => i.IsActive == true)
-            //    .ToList();
-            string jsonString = JsonSerializer.Serialize(_context
+            return Ok(_context
                 .Houses
                 .Include(i => i.ProvinceCodeNavigation)
                 .Include(i => i.DistrictCodeNavigation)
                 .Include(i => i.WardCodeNavigation)
                 .Where(i => i.IsActive == true)
-                .ToList(), options);
-            return Ok(jsonString);
+                .ToList());
         }
         [HttpGet("getById")]
         public IActionResult GetHouseById(int id)
@@ -60,18 +49,38 @@ namespace PRN231_HE160575_Project04.Controllers
         [HttpGet("GetAllProvinces")]
         public IActionResult GetAllProvinces()
         {
-            return Ok(_context.Provinces.ToList());
+            return Ok(_context.Provinces
+                .Where(i => i.Code.Equals("01") || i.Code.Equals("04") || i.Code.Equals("06"))
+                .ToList());
         }
         [HttpGet("GetAllDistricts")]
-        public IActionResult GetDistrictbyID(string Province_code = "001")
+        public IActionResult GetDistrictbyID()
         {
-            return Ok(_context.Districts.Where(i => i.ProvinceCode.Equals(Province_code)).ToList());
+            return Ok(_context.Districts
+                .Where(i => i.ProvinceCode.Equals("01") || i.ProvinceCode.Equals("04") || i.ProvinceCode.Equals("06")).ToList());
+            //.Where(i => i.ProvinceCode.Equals(Province_code)).ToList());
         }
         [HttpGet("GetAllWards")]
-        public IActionResult GetAllWards(string District_code = "001")
+        public IActionResult GetAllWards()
         {
-            return Ok(_context.Wards.Where(i => i.DistrictCode.Equals(District_code)).ToList());
+            //_context.Districts
+            //    .Where(i => i.ProvinceCode.Equals("01") || i.ProvinceCode.Equals("04") || i.ProvinceCode.Equals("06")).ToList();
+            //return Ok(_context.Wards.Where(i => i.DistrictCode.Equals(District_code)).ToList());
+
+            var districts = _context.Districts
+            .Where(i => i.ProvinceCode.Equals("01") || i.ProvinceCode.Equals("04") || i.ProvinceCode.Equals("06"))
+            .ToList();
+            // Tạo danh sách mã của các Districts đã lọc
+            var districtCodes = districts.Select(d => d.Code).ToList();
+            // Lấy danh sách các Wards dựa trên các Districts đã lọc
+            var wards = _context.Wards
+                .Include(w => w.DistrictCodeNavigation) // Include thông tin của Districts
+                .Where(w => districtCodes.Contains(w.DistrictCode)) // Chỉ lấy các Wards có DistrictCode nằm trong danh sách đã lọc
+                .ToList();
+
+            return Ok(wards);
         }
+       
         [HttpPost("AddHouse")]
         public IActionResult AddHouse(AddHouseRequest House)
         {
@@ -120,7 +129,7 @@ namespace PRN231_HE160575_Project04.Controllers
         [HttpDelete("DeleteHouse")]
         public IActionResult DeleteHouse(int HouseId)
         {
-            House toUpdateHouse = _context.Houses.SingleOrDefault(i=>i.HouseId == HouseId);
+            House toUpdateHouse = _context.Houses.SingleOrDefault(i => i.HouseId == HouseId);
             if (toUpdateHouse == null)
             {
                 ModelState.AddModelError("Error", "House is not found !");
@@ -167,7 +176,7 @@ namespace PRN231_HE160575_Project04.Controllers
             toUpdateHouse.Quantity = updatehouse.Quantity;
             toUpdateHouse.Description = updatehouse.Description;
             toUpdateHouse.Rate = updatehouse.Rate;
-            toUpdateHouse.PublicDay = updatehouse.PublicDay;
+            toUpdateHouse.PublicDay = DateTime.Now;
             toUpdateHouse.UserId = 1;
             toUpdateHouse.DistrictCode = updatehouse.DistrictCode;
             toUpdateHouse.ProvinceCode = updatehouse.ProvinceCode;
@@ -186,22 +195,33 @@ namespace PRN231_HE160575_Project04.Controllers
         public partial class AddHouseRequest
         {
             public int HouseId { get; set; }
+            [Required]
             public string Title { get; set; } = null!;
+            [Required]
             public string Image { get; set; } = null!;
+            [Required]
             public decimal Price { get; set; }
+            [Required]
             public int Area { get; set; }
+            [Required]
             public string Location { get; set; } = null!;
             public int DaysAgo { get; set; }
             public bool IsActive { get; set; }
+            [Required]
             public int Type { get; set; }
+            [Required]
             public int Quantity { get; set; }
+            [Required]
             public string Description { get; set; } = null!;
             public int Rate { get; set; }
             public DateTime PublicDay { get; set; }
             public int UserId { get; set; }
-            public string? DistrictCode { get; set; }
-            public string? ProvinceCode { get; set; }
-            public string? WardCode { get; set; }
+            [Required]
+            public string DistrictCode { get; set; }
+            [Required]
+            public string ProvinceCode { get; set; }
+            [Required]
+            public string WardCode { get; set; }
         }
 
     }
