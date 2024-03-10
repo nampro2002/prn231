@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "JQBmeH0OT22fHmM+gMSuD0jnibFGA3tXzlzGnaT1zLVuCgVl/Nt+uAdhK8QZztoogLOLqlSaW7xEzHycw/zVCA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Asus\\Downloads\\Demo_PRN231_SE1625\\PRN231_HE160575_Project04_Client\\PRN231_HE160575_Project04_Client.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Asus\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

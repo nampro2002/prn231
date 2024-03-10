@@ -1,0 +1,58 @@
+﻿@page
+@model PRN231_HE160575_Project04_Client.Pages.Users.edituserModel
+@{
+}
+
+<h1>Chỉnh sửa người dùng</h1>
+
+<form method="post" asp-page-handler="UpdateUser">
+    <input type="hidden" asp-for="User.UserId" />
+    <div class="form-group">
+        <label asp-for="User.FullName"></label>
+        <input asp-for="User.FullName" class="form-control" />
+        <span asp-validation-for="User.FullName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Birthdate"></label>
+        <input asp-for="User.Birthdate" class="form-control" />
+        <span asp-validation-for="User.Birthdate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.PhoneNumber"></label>
+        <input asp-for="User.PhoneNumber" class="form-control" />
+        <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Email"></label>
+        <input asp-for="User.Email" class="form-control" />
+        <span asp-validation-for="User.Email" class="text-danger"></span>
+    </div>
+     <div class="form-group">
+        <label asp-for="User.Address"></label>
+        <input asp-for="User.Address" class="form-control" />
+        <span asp-validation-for="User.Address" class="text-danger"></span>
+    </div>
+     <div class="form-group">
+        <label asp-for="User.Avatar"></label>
+        <input asp-for="User.Avatar" class="form-control" />
+        <span asp-validation-for="User.Avatar" class="text-danger"></span>
+    </div>
+     <div class="form-group">
+        <label asp-for="User.Roll"></label>
+        <input asp-for="User.Roll" class="form-control" />
+        <span asp-validation-for="User.Roll" class="text-danger"></span>
+    </div>
+    <div class="form-check">
+        <input asp-for="User.IsActived" class="form-check-input" />
+        <label class="form-check-label" asp-for="User.IsActived">Is Actived</label>
+        <span asp-validation-for="User.IsActived" class="text-danger"></span>
+    </div>
+    <div class="form-check">
+        <input asp-for="User.IsVerified" class="form-check-input" />
+        <label class="form-check-label" asp-for="User.IsVerified">Is Verified</label>
+        <span asp-validation-for="User.IsVerified" class="text-danger"></span>
+    </div>
+    <!-- Thêm các trường dữ liệu khác tương tự -->
+
+    <button type="submit" class="btn btn-primary">Lưu</button>
+</form>

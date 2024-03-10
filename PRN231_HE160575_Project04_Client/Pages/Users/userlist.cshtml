@@ -1,0 +1,50 @@
+﻿@page "/userlist"
+@model PRN231_HE160575_Project04_Client.Pages.Users.userlistModel
+@{
+
+}
+
+<!-- Bảng danh sách người dùng -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Họ và tên</th>
+            <th>Số điện thoại</th>
+            <th>Email</th>
+            <th>Địa chỉ</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.userList)
+        {
+            <tr>
+                <td>@user.UserId</td>
+                <td>@user.FullName</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.Email</td>
+                <td>@user.Address</td>
+                <td>
+                    <!-- Button chỉnh sửa -->
+                    @* <a asp-page="EditUser" asp-route-id="@user.UserId" asp-action="SetUpdate" class="btn btn-primary">Chỉnh sửa</a> *@
+                    <a asp-route-UserId="@user.UserId" asp-page-handler="SetUpdate">Update</a>
+                    <!-- Button xóa -->
+                    @if (!user.IsActived)
+                    {
+                        <form asp-page-handler="BanUser" asp-route-id="@user.UserId" method="post" onsubmit="return confirm('Bạn có chắc chắn');">
+                            <button type="submit" class="btn btn-danger">DisBan</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form  asp-page-handler="BanUser" asp-route-id="@user.UserId" method="post" onsubmit="return confirm('Bạn có chắc chắn');">
+                            <button type="submit" class="btn btn-danger">Ban</button>
+                        </form>
+                    }
+                   
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

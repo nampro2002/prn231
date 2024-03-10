@@ -1,0 +1,15 @@
+﻿dotnet ef migrations add CreateTableUser / tạo
+dotnet ef database update // update db
+dotnet ef migrations remove // xóa cái mới nhất
+dotnet ef migrations remove --context ApplicationDbContext // xóa theo tên
+dotnet ef database update InitialCreate / update db theo tên
+dotnet ef migrations list
+
+dotnet ef database drop
+dotnet ef migrations add Newmigation / tạo migation Add-Migration command does not create the database. It just creates the two snapshot files in the Migrations folder.The Up() method includes the code for creating DB objects and the Down() method includes code for removing DB objects.
+dotnet ef database update "Add_Data_Location_House" / Áp dụng migation
+
+dotnet ef migrations add Add_House_TableAndData
+
+
+dotnet ef dbcontext scaffold "server =localhost; database = PRN231_Project;uid=sa;pwd=123;" Microsoft.EntityFrameworkCore.SqlServer --output-dir ModelsV3

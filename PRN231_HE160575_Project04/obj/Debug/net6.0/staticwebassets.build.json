@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "1OSW3hDIWEWSSQ14abPDd7gx6OnqWO/+Gqg5KDjPHyQ=",
+  "Source": "PRN231_HE160575_Project04",
+  "BasePath": "_content/PRN231_HE160575_Project04",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "PRN231_HE160575_Project04\\wwwroot",
+      "Source": "PRN231_HE160575_Project04",
+      "ContentRoot": "C:\\Users\\Asus\\Downloads\\Demo_PRN231_SE1625\\PRN231_HE160575_Project04\\wwwroot\\",
+      "BasePath": "_content/PRN231_HE160575_Project04",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}

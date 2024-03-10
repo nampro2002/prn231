@@ -1,0 +1,158 @@
+﻿@page "/profile"
+@model PRN231_HE160575_Project04_Client.Pages.Users.profileModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="~/css/profile.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="profile-container">
+        <div class="tabs">
+            <button id="profile-btn" class="active btn-content">Profile</button>
+            <button id="password-btn" class="btn-content">Change Password</button>
+            <button id="bookingHistory-btn" class="btn-content">Booking History</button>
+        </div>
+        <!-- Profile Tab -->
+
+        <div id="profile-tab" class="tab-content">
+            <form method="post" >
+                <img id="Avatar" src="@Model.user.Avatar" alt="User Avatar" class="avatar">
+                <input id="fileInput" type="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
+                <input hidden id="AvatarInput" type="text" asp-for="@Model.user.Avatar" readonly>
+               
+                <div class="verification-status">
+                    <button class="verification-status @(Model.user.IsVerified ? "verified" : "unverified")" type="submit" asp-page-handler="Verify">Verified</button>
+                </div>
+                <label>
+                    UserId:
+                    <input type="text" asp-for="@Model.user.UserId" readonly>
+                </label>
+                <label>
+                    IsActived:
+                    <input type="text" asp-for="@Model.user.IsActived" readonly>
+                </label>
+                <label>
+                    IsVerified:
+                    <input type="text" asp-for="@Model.user.IsVerified" readonly>
+                </label>
+                <label>
+                    Balance:
+                    <input type="text" asp-for="@Model.user.balance" readonly>
+                </label>
+                <label>
+                    Roll:
+                    <input type="text" asp-for="@Model.user.Roll" readonly>
+                </label>
+                <label>
+                    Họ và tên:
+                    <input type="text" asp-for="@Model.user.FullName">
+                </label>
+                <label>
+                    Ngày tháng năm sinh:
+                    <input type="date" asp-for=@Model.user.Birthdate />
+                </label>
+                <label>
+                    Số điện thoại:
+                    <input type="tel" asp-for=@Model.user.PhoneNumber />
+                </label>
+                <label>
+                    Email:
+                    <input type="email" asp-for=@Model.user.Email readonly />
+                </label>
+                <label>
+                    Password:
+                    <input type="text" asp-for=@Model.user.Password readonly />
+                </label>
+                <label>
+                    Địa chỉ nhà:
+                    <input type="text" asp-for=@Model.user.Address />
+                </label>
+                <button type="submit" asp-page-handler="Update"  >Update</button>
+            </form>
+        </div>
+
+        <!-- Password Tab -->
+        <div id="password-tab" class="tab-content" style="display: none;">
+            <form method="post" >
+            <label>
+                Mật khẩu hiện tại:
+                    <input type="password" asp-for=@Model.updatePasswordRequest.currentPassword>
+            </label>
+            <label>
+                Mật khẩu mới:
+                    <input type="password" asp-for=@Model.updatePasswordRequest.newPassword>
+            </label>
+            <label>
+                Xác nhận mật khẩu mới:
+                    <input type="password" asp-for=@Model.updatePasswordRequest.confirmPassword>
+            </label>
+                <button type="submit" asp-page-handler="UpdatePassword" >Update Password</button>
+            </form>
+        </div>
+
+        <!-- Booking History Tab -->
+        <div id="bookingHistory-tab" class="tab-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Model</th>
+                        <th>Ngày Book</th>
+                        <th>Ngày Hết Hạn</th>
+                        <th>Số ngày book</th>
+                        <th>Giá đã book</th>
+                        <th>Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @foreach (var item in Model.bookingHistory)                    
+                        {
+                            <tr>
+                                <td>@item.BookingId</td>
+                                <td>@item.UserId</td>
+                                <td>@item.HouseId</td>
+                                <td>@item.BookingDate</td>
+                                <td>@item.ExpirationDate</td>
+                                <td><button onclick="handleDetail(@item.BookingId)">Detail</button></td>
+                            </tr>
+                        }                    
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="~/js/profile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    @if ((Model.MessageResponse) != null)
+    {
+        if (Model.MessageResponse.ErrorCode == 200)
+        {
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thông Báo',
+                    html: '@Model.MessageResponse.ToString()',
+                });
+            </script>
+        }
+        else
+        {
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thông Báo',
+                    html: '@Model.MessageResponse.ToString()',
+                });
+            </script>
+        }
+    }
+</body>
+</html>

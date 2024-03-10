@@ -1,0 +1,259 @@
+﻿@page "/HouseManager"
+@model PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <!-- Main Content Area -->
+            <div class="col-md-10">
+                <!-- Form -->
+                <div class="mb-3">
+                    <h1 id="mainContentTitle">Enter House Information</h1>
+                    <form style="margin:20px;" asp-page-handler="AddHouse" id="houseForm" method="post"></form>
+                    <div class="mb-3">
+                        <label for="city">Thành phố</label>
+                        <form id="provinceForm" method="post" asp-page-handler="GetDistricts"></form>
+                        <select form="provinceForm" class="form-control" id="citySelect" onchange="updateSearchHouseProvinceCode()">
+                            <option value="">Chọn tỉnh thành</option>
+                            @foreach (var item in PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel.provinces)
+                            {
+                                if (!string.IsNullOrEmpty(PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel.SearchHouse.ProvinceCode))
+                                {
+                                    if (item.Code.Equals(PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel.SearchHouse.ProvinceCode))
+                                    {
+                                        <option selected value="@item.Code">@item.Name</option>
+                                    }
+                                }
+                                <option value="@item.Code">@item.Name</option>
+                            }
+                        </select>
+                        <input form="provinceForm" id="SearchHouseProvinceCode" asp-for="@Model.house.ProvinceCode" name="selectedProvinceCode" hidden></input>
+                        <script>
+                            function updateSearchHouseProvinceCode() {
+                                var selectElement = document.getElementById("citySelect");
+                                var selectedProvinceCode = selectElement.value;
+                                document.getElementById("SearchHouseProvinceCode").value = selectedProvinceCode;
+                                document.getElementById("provinceForm").submit();
+                            }
+                        </script>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label for="district">Quận</label>
+                            <form id="districtsForm" method="post" asp-page-handler="GetAllWards">
+                                <select class="form-control" id="districtSelect" onchange="updateSelectedDistrictCode()">
+                                    <option value="">Chọn Quận</option>
+                                    @foreach (var item in PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel.districts)
+                                    {
+                                        if (!string.IsNullOrEmpty(PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel.SearchHouse.DistrictCode))
+                                        {
+                                            if (item.Code.Equals(PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel.SearchHouse.DistrictCode))
+                                            {
+                                                <option selected value="@item.Code">@item.Name</option>
+                                            }
+                                        }
+                                        <option value="@item.Code">@item.Name</option>
+                                    }
+                                </select>
+                                <input id="SelectedDistrictCode" asp-for="@Model.house.DistrictCode" name="SelectedDistrictCode" hidden />
+                                <script>
+                                    function updateSelectedDistrictCode() {
+                                        var selectElement = document.getElementById("districtSelect");
+                                        var selectedProvinceCode = selectElement.value;
+                                        document.getElementById("SelectedDistrictCode").value = selectedProvinceCode;
+                                        document.getElementById("districtsForm").submit();
+                                    }
+                                </script>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label for="district">Phường/Xã</label>
+                            <form id="wardsForm" method="post" asp-page-handler="SetWard">
+                                <select class="form-control" id="wardSelect" onchange="updateSelectedWardCode()">
+                                    <option value="">Chọn Phường/Xã</option>
+                                    @foreach (var item in PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel.wards)
+                                    {
+                                        if (!string.IsNullOrEmpty(PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel.SearchHouse.WardCode))
+                                        {
+                                            if (item.Code.Equals(PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel.SearchHouse.WardCode))
+                                            {
+                                                <option selected value="@item.Code">@item.Name</option>
+                                            }
+                                        }
+                                        <option value="@item.Code">@item.Name</option>
+                                    }
+                                </select>
+                                <input id="SelectedWardCode" asp-for="@Model.house.WardCode" name="SelectedWardCode" hidden />
+                                <script>
+                                    function updateSelectedWardCode() {
+                                        var selectElement = document.getElementById("wardSelect");
+                                        var selectedProvinceCode = selectElement.value;
+                                        document.getElementById("SelectedWardCode").value = selectedProvinceCode;
+                                        document.getElementById("wardsForm").submit();
+                                    }
+                                </script>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">Id</label>
+                        <input form="houseForm" type="text" asp-for="house.HouseId" class="form-control" id="emailAddress">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Title</label>
+                        <input form="houseForm" type="text" asp-for="house.Title" class="form-control" id="password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Image</label>
+                        <input form="houseForm" type="text" asp-for="house.Image"class="form-control" id="source">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Price</label>
+                        <input form="houseForm" type="text" asp-for="house.Price" class="form-control" id="firstName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Area</label>
+                        <input form="houseForm" type="text" asp-for="house.Area"  class="form-control" id="middleName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Location</label>
+                        <input form="houseForm" type="text" asp-for="house.Location"  class="form-control" id="lastName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">IsActive</label>
+                        <input form="houseForm" type="text" asp-for="house.IsActive"  class="form-control" id="roleId">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Type</label>
+                        <input form="houseForm" type="text" asp-for="house.Type" class="form-control" id="pubId">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Quantity</label>
+                        <input form="houseForm" type="text" asp-for="house.Quantity"  class="form-control" id="pubId">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Description</label>
+                        <input form="houseForm" type="text" asp-for="house.Description"  class="form-control" id="pubId">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Rate</label>
+                        <input form="houseForm" type="text" asp-for="house.Rate"  class="form-control" id="pubId">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">PublicDay</label>
+                        <input form="houseForm" type="date" asp-for="house.PublicDay"  class="form-control" id="pubId">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">User</label>
+                        <input form="houseForm" type="text" asp-for="house.User.UserId" value="1" class="form-control" id="pubId">
+                    </div>
+
+                    <button form="houseForm" type="submit" id="editButton" class="btn btn-primary">Add House</button>
+                    <button type="button" id="clearButton" class="btn btn-secondary">Clear</button>
+
+                </div>
+
+                <div>
+                    <h1>House</h1>
+                    <input type="text" class="form-control mb-3" placeholder="Search">
+                    <table id="housesTableTitle" class="table">
+                        <thead>
+                            <tr id="housesTable">
+                                <th scope="col">HouseId</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Area</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">DaysAgo</th>
+                                <th scope="col">IsActive</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Rate</th>
+                                <th scope="col">User</th>
+                                <th scope="col">DistrictCode</th>
+                                <th scope="col">ProvinceCode</th>
+                                <th scope="col">WardCode</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var house in PRN231_HE160575_Project04_Client.Pages.Houses.HouseManagerModel.houses)
+                            {
+
+                                <tr>
+                                    <td>@house.HouseId</td>
+                                    <td>@house.Title</td>
+                                    <td>@house.Image</td>
+                                    <td>@house.Price</td>
+                                    <td>@house.Area</td>
+                                    <td>@house.Location</td>
+                                    <td>@house.DaysAgo</td>
+                                    <td>@house.IsActive</td>
+                                    <td>@house.Type</td>
+                                    <td>@house.Quantity</td>
+                                    <td>@house.Description</td>
+                                    <td>@house.Rate</td>
+                                    <td>@house.User</td>
+                                    <td>@house.DistrictCodeNavigation.Name</td>
+                                    <td>@house.ProvinceCodeNavigation.Name</td>
+                                    <td>@house.WardCodeNavigation.Name</td>
+                                    <td>
+                                        <a asp-route-HouseId="@house.HouseId" asp-page-handler="DeleteHouse">Delete</a>
+                                        <a asp-route-HouseId="@house.HouseId" asp-page-handler="SetUpdateHouse">Update</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    @if ((Model.MessageResponse) != null)
+    {
+        if (Model.MessageResponse.ErrorCode == 200)
+        {
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thông Báo',
+                    html: '@Model.MessageResponse.ToString()',
+                });
+            </script>
+        }
+        else
+        {
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thông Báo',
+                    html: '@Model.MessageResponse.ToString()',
+                });
+            </script>
+        }
+
+    }
+</body>
+</html>
