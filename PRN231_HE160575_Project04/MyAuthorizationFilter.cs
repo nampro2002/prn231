@@ -13,7 +13,7 @@ namespace PRN231_HE160575_Project04
     {
         private readonly string _secretKey;
 
-        public MyAuthorizationFilter(string secretKey = "BACHSONGDUCHE160575")
+        public MyAuthorizationFilter(string secretKey = "BACHSONGDUCHE160575BACHSONGDUCHE160575")
         {
             _secretKey = secretKey;
         }

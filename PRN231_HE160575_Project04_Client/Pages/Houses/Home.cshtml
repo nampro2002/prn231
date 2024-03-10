@@ -151,7 +151,7 @@
                         <p class="card-text">Is Active @house.IsActive.ToString()</p>
                         <p class="card-text">Rate @house.Rate</p>
                         <p class="card-text">Full Location @house.ProvinceCodeNavigation.Name @house.DistrictCodeNavigation.Name @house.WardCodeNavigation.Name</p>
-                        <a href="#" class="btn btn-primary">Detail</a>
+                        <a asp-route-id="@house.HouseId" asp-page="HouseDetail" class="btn btn-primary">Detail</a>
                     </div>
                 </div>
             </div>

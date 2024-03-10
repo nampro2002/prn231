@@ -6,10 +6,10 @@ namespace PRN231_HE160575_Project04.ModelsV2
 {
     public partial class House
     {
-        public House()
-        {
-            BookingHistories = new HashSet<BookingHistory>();
-        }
+        //public House()
+        //{
+        //    BookingHistories = new HashSet<BookingHistory>();
+        //}
 
         public int HouseId { get; set; }
         public string Title { get; set; } = null!;
@@ -28,12 +28,10 @@ namespace PRN231_HE160575_Project04.ModelsV2
         public string? DistrictCode { get; set; }
         public string? ProvinceCode { get; set; }
         public string? WardCode { get; set; }
-
         public virtual District? DistrictCodeNavigation { get; set; }
         public virtual Province? ProvinceCodeNavigation { get; set; }
         public virtual User User { get; set; } = null!;
         public virtual Ward? WardCodeNavigation { get; set; }
-        [JsonIgnore]
         public virtual ICollection<BookingHistory> BookingHistories { get; set; }
     }
 }

@@ -13,13 +13,13 @@ namespace PRN231_HE160575_Project04.ModelsV2
         }
 
         public int UserId { get; set; }
-        public string FullName { get; set; } 
-        public string Birthdate { get; set; }
-        public string PhoneNumber { get; set; } 
-        public string Email { get; set; }
-        public string Password { get; set; } 
-        public string Address { get; set; } 
-        public string Avatar { get; set; }
+        public string FullName { get; set; } = null!;
+        public string Birthdate { get; set; } = null!;
+        public string PhoneNumber { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Password { get; set; } = null!;
+        public string Address { get; set; } = null!;
+        public string Avatar { get; set; } = null!;
         public int Roll { get; set; }
         public bool? IsActived { get; set; }
         public bool? IsVerified { get; set; }

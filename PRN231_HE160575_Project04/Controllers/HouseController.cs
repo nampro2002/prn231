@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PRN231_HE160575_Project04.ModelsV2;
+using PRN231_HE160575_Project04;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using PRN231_HE160575_Project04.ModelsV2;
 
 namespace PRN231_HE160575_Project04.Controllers
 {
@@ -27,7 +28,12 @@ namespace PRN231_HE160575_Project04.Controllers
                 // Đặt mức độ sâu tối đa của đối tượng trong chuỗi JSON
                 MaxDepth = 32 // Tùy chỉnh mức độ sâu theo nhu cầu của bạn
             };
-
+            //List<House> h = _context.Houses
+            //    .Include(i => i.ProvinceCodeNavigation)
+            //    .Include(i => i.DistrictCodeNavigation)
+            //    .Include(i => i.WardCodeNavigation)
+            //    .Where(i => i.IsActive == true)
+            //    .ToList();
             string jsonString = JsonSerializer.Serialize(_context
                 .Houses
                 .Include(i => i.ProvinceCodeNavigation)
@@ -37,6 +43,20 @@ namespace PRN231_HE160575_Project04.Controllers
                 .ToList(), options);
             return Ok(jsonString);
         }
+        [HttpGet("getById")]
+        public IActionResult GetHouseById(int id)
+        {
+            //List<House> h = _context.Houses.ToList();
+            //House house = h.SingleOrDefault(x => x.HouseId == id);
+            House house = _context.Houses
+                .Include(x=>x.ProvinceCodeNavigation)
+                .Include(x => x.DistrictCodeNavigation)
+                .Include(x => x.WardCodeNavigation)
+                   .Include(x => x.User)
+                .SingleOrDefault(x=> x.HouseId == id);
+            return Ok(house);
+        }
+
         [HttpGet("GetAllProvinces")]
         public IActionResult GetAllProvinces()
         {

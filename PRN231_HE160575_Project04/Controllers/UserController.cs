@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using PRN231_HE160575_Project04.ModelsV2;
+using PRN231_HE160575_Project04;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using System.Net;
@@ -14,7 +14,8 @@ using System.Security.Claims;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.Filters;
-using PRN231_HE160575_Project04.ModelsV2.DTO;
+using PRN231_HE160575_Project04.DTO;
+using PRN231_HE160575_Project04.ModelsV2;
 
 namespace PRN231_HE160575_Project04.Controllers
 {

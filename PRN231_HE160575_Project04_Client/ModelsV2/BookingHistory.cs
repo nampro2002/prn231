@@ -11,7 +11,7 @@ namespace PRN231_HE160575_Project04_Client.ModelsV2
         public int HouseId { get; set; }
         public DateTime BookingDate { get; set; }
         public DateTime ExpirationDate { get; set; }
-
+        public string? Price { get; set; }
         public virtual House House { get; set; } = null!;
         public virtual UserModel User { get; set; } = null!;
     }

@@ -65,7 +65,7 @@ namespace PRN231_HE160575_Project04_Client.Models
 
         public AdministrativeRegion AdministrativeRegion { get; set; }
 
-        public ICollection<House> Houses { get; set; }
+        public ICollection<HouseX> Houses { get; set; }
     }
 
     public class District
@@ -95,7 +95,7 @@ namespace PRN231_HE160575_Project04_Client.Models
 
         public AdministrativeUnit AdministrativeUnit { get; set; }
 
-        public ICollection<House> Houses { get; set; }
+        public ICollection<HouseX> Houses { get; set; }
     }
 
     public class Ward
@@ -125,7 +125,7 @@ namespace PRN231_HE160575_Project04_Client.Models
 
         public AdministrativeUnit AdministrativeUnit { get; set; }
 
-        public ICollection<House> Houses { get; set; }
+        public ICollection<HouseX> Houses { get; set; }
     }
 
 }

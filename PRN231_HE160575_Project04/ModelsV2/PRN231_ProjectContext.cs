@@ -30,7 +30,7 @@ namespace PRN231_HE160575_Project04.ModelsV2
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server =localhost; database = PRN231_Project;uid=sa;pwd=123;");
+                optionsBuilder.UseSqlServer("server =(local); database = PRN231_Project;uid=sa;pwd=123456;TrustServerCertificate=true");
             }
         }
 
@@ -63,7 +63,7 @@ namespace PRN231_HE160575_Project04.ModelsV2
             modelBuilder.Entity<BookingHistory>(entity =>
             {
                 entity.HasKey(e => e.BookingId)
-                    .HasName("PK__BookingH__73951AED31DC0998");
+                    .HasName("PK__BookingH__73951AED15F76F6A");
 
                 entity.ToTable("BookingHistory");
 
@@ -71,26 +71,24 @@ namespace PRN231_HE160575_Project04.ModelsV2
 
                 entity.Property(e => e.ExpirationDate).HasColumnType("datetime");
 
+                entity.Property(e => e.Price).IsUnicode(false);
+
                 entity.HasOne(d => d.House)
                     .WithMany(p => p.BookingHistories)
                     .HasForeignKey(d => d.HouseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BookingHi__House__7226EDCC");
+                    .HasConstraintName("FK__BookingHi__House__5CD6CB2B");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.BookingHistories)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BookingHi__UserI__7132C993");
+                    .HasConstraintName("FK__BookingHi__UserI__5DCAEF64");
             });
 
             modelBuilder.Entity<District>(entity =>
             {
                 entity.HasKey(e => e.Code);
-
-                entity.HasIndex(e => e.AdministrativeUnitId, "IX_Districts_Administrative_unit_id");
-
-                entity.HasIndex(e => e.ProvinceCode, "IX_Districts_Province_code");
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
@@ -119,14 +117,6 @@ namespace PRN231_HE160575_Project04.ModelsV2
 
             modelBuilder.Entity<House>(entity =>
             {
-                entity.HasIndex(e => e.DistrictCode, "IX_Houses_DistrictCode");
-
-                entity.HasIndex(e => e.ProvinceCode, "IX_Houses_ProvinceCode");
-
-                entity.HasIndex(e => e.UserId, "IX_Houses_UserId");
-
-                entity.HasIndex(e => e.WardCode, "IX_Houses_WardCode");
-
                 entity.Property(e => e.DistrictCode).HasMaxLength(20);
 
                 entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
@@ -155,10 +145,6 @@ namespace PRN231_HE160575_Project04.ModelsV2
             modelBuilder.Entity<Province>(entity =>
             {
                 entity.HasKey(e => e.Code);
-
-                entity.HasIndex(e => e.AdministrativeRegionId, "IX_Provinces_Administrative_region_id");
-
-                entity.HasIndex(e => e.AdministrativeUnitId, "IX_Provinces_Administrative_unit_id");
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
@@ -199,10 +185,6 @@ namespace PRN231_HE160575_Project04.ModelsV2
             modelBuilder.Entity<Ward>(entity =>
             {
                 entity.HasKey(e => e.Code);
-
-                entity.HasIndex(e => e.AdministrativeUnitId, "IX_Wards_Administrative_unit_id");
-
-                entity.HasIndex(e => e.DistrictCode, "IX_Wards_District_code");
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 

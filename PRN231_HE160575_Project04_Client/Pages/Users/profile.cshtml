@@ -27,11 +27,11 @@
                 <div class="verification-status">
                     <button class="verification-status @(Model.user.IsVerified ? "verified" : "unverified")" type="submit" asp-page-handler="Verify">Verified</button>
                 </div>
-                <label>
+                <label style="display: none;">
                     UserId:
                     <input type="text" asp-for="@Model.user.UserId" readonly>
                 </label>
-                <label>
+                <label style="display: none;">
                     IsActived:
                     <input type="text" asp-for="@Model.user.IsActived" readonly>
                 </label>
@@ -43,7 +43,7 @@
                     Balance:
                     <input type="text" asp-for="@Model.user.balance" readonly>
                 </label>
-                <label>
+                <label style="display: none;">
                     Roll:
                     <input type="text" asp-for="@Model.user.Roll" readonly>
                 </label>
@@ -63,7 +63,7 @@
                     Email:
                     <input type="email" asp-for=@Model.user.Email readonly />
                 </label>
-                <label>
+                <label style="display: none;">
                     Password:
                     <input type="text" asp-for=@Model.user.Password readonly />
                 </label>
@@ -95,7 +95,7 @@
         </div>
 
         <!-- Booking History Tab -->
-        <div id="bookingHistory-tab" class="tab-content">
+        <div id="bookingHistory-tab" class="tab-content" style="display: none;">
             <table>
                 <thead>
                     <tr>
@@ -117,6 +117,7 @@
                                 <td>@item.HouseId</td>
                                 <td>@item.BookingDate</td>
                                 <td>@item.ExpirationDate</td>
+                                <td>@item.Price vnđ</td>
                                 <td><button onclick="handleDetail(@item.BookingId)">Detail</button></td>
                             </tr>
                         }                    

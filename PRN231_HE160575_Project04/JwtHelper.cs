@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using PRN231_HE160575_Project04;
 using PRN231_HE160575_Project04.ModelsV2;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,7 +13,7 @@ namespace PRN231_HE160575_Project04
         public static string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("BACHSONGDUCHE160575");
+            var key = Encoding.ASCII.GetBytes("BACHSONGDUCHE160575BACHSONGDUCHE160575");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("userId", user.UserId.ToString()) }),
@@ -26,7 +27,7 @@ namespace PRN231_HE160575_Project04
 
         public static string GenerateToken(int userId)
         {
-            const string SecretKey = "BACHSONGDUCHE160575";
+            const string SecretKey = "BACHSONGDUCHE160575BACHSONGDUCHE160575";
             // Tạo các claim cho token, bao gồm cả userId
             var claims = new[]
                 {

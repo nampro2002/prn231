@@ -1,0 +1,144 @@
+﻿@page "/hdetails"
+@model PRN231_HE160575_Project04_Client.Pages.Houses.HouseDetailModel
+@{
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>House Detail</title>
+    <style>
+
+        .containerx {
+            max-width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        img {
+            max-width: 600px;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            margin-bottom: 10px;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .detail-value {
+            color: #333;
+        }
+
+        .bt {
+            background-color: #04aa6d; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .info {
+            border: 1px solid #000;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+
+        .left-c {
+            height: 90%;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="containerx">
+        <div class="left-c">
+            <div class="info">
+                <h1>Thông tin</h1>
+                <div class="detail-item">
+                    <span class="detail-label">Price:</span>
+                    <span class="detail-value">$@Model.HouseDetail.Price</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Area:</span>
+                    <span class="detail-value">@Model.HouseDetail.Area square meters</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Location:</span>
+                    <span class="detail-value">@Model.HouseDetail.Location</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Listed:</span>
+                    <span class="detail-value">@Model.HouseDetail.DaysAgo days ago</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Type:</span>
+                    <span class="detail-value">@Model.HouseDetail.Type</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Description:</span>
+                    <span class="detail-value">@Model.HouseDetail.Description</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Rate:</span>
+                    <span class="detail-value">@Model.HouseDetail.Rate</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Public Day:</span>
+                    <span class="detail-value">@Model.HouseDetail.PublicDay</span>
+                </div>
+            </div>
+            <div class="info">
+                <div>
+                    <h2>Địa chỉ</h2>
+                    <span>Province: @Model.HouseDetail.ProvinceCodeNavigation.Name</span>
+                    <span>District: @Model.HouseDetail.DistrictCodeNavigation.Name</span>
+                    <span>Ward: @Model.HouseDetail.ProvinceCodeNavigation.Name</span>
+                </div>                
+            </div>
+            <div class="info">
+                <div>
+                    <h2>Chủ trọ</h2>
+                    <p>User Name: @Model.HouseDetail.User.FullName</p>
+                </div>
+            </div>
+
+            <div>
+                <a asp-route-id="@Model.HouseDetail.HouseId" asp-page="OrderForm" class="bt">Order</a>
+            </div>
+        </div>
+       
+
+        <div class="right-c">
+            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/ba/29/5c/img-worlds-of-adventure.jpg?w=1200&h=1200&s=1"
+                />
+        </div>
+    </div>
+</body>
+</html>

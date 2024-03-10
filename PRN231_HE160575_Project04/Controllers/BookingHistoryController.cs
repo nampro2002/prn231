@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using PRN231_HE160575_Project04.ModelsV2;
 using static PRN231_HE160575_Project04.Controllers.HouseController;
+using PRN231_HE160575_Project04.ModelsV2;
 
 namespace PRN231_HE160575_Project04.Controllers
 {
@@ -159,6 +159,7 @@ namespace PRN231_HE160575_Project04.Controllers
         {
             public int UserId { get; set; }
             public int HouseId { get; set; }
+            public double total {  get; set; }
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
         }

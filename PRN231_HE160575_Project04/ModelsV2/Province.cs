@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace PRN231_HE160575_Project04.ModelsV2
 {
@@ -22,7 +23,9 @@ namespace PRN231_HE160575_Project04.ModelsV2
 
         public virtual AdministrativeRegion? AdministrativeRegion { get; set; }
         public virtual AdministrativeUnit? AdministrativeUnit { get; set; }
+        [JsonIgnore]
         public virtual ICollection<District> Districts { get; set; }
+        [JsonIgnore]
         public virtual ICollection<House> Houses { get; set; }
     }
 }

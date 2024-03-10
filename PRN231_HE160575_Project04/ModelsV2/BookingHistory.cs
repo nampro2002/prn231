@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace PRN231_HE160575_Project04.ModelsV2
 {
@@ -11,6 +10,8 @@ namespace PRN231_HE160575_Project04.ModelsV2
         public int HouseId { get; set; }
         public DateTime BookingDate { get; set; }
         public DateTime ExpirationDate { get; set; }
+        public string? Price { get; set; }
+
         public virtual House House { get; set; } = null!;
         public virtual User User { get; set; } = null!;
     }

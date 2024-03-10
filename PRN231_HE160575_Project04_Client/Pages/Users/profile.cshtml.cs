@@ -64,7 +64,7 @@ namespace PRN231_HE160575_Project04_Client.Pages.Users
         public async Task<IActionResult> OnPostUpdateAsync()
         {
             string retrievedToken = Request.Cookies["token"] ?? "token";
-            string link = "http://localhost:5059/api/User/UpdateUser";
+            string link = "http://localhost:5059/api/User/UpdateProfile";
             using (HttpClient clien = new HttpClient())
             {
                 clien.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(retrievedToken);
