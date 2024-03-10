@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "1OSW3hDIWEWSSQ14abPDd7gx6OnqWO/+Gqg5KDjPHyQ=",
+  "Hash": "OaIjk62iALkxVK76+yfKld0Z/xkdTlQeTpT1BR4q2IY=",
   "Source": "PRN231_HE160575_Project04",
   "BasePath": "_content/PRN231_HE160575_Project04",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "PRN231_HE160575_Project04\\wwwroot",
       "Source": "PRN231_HE160575_Project04",
-      "ContentRoot": "C:\\Users\\Asus\\Downloads\\Demo_PRN231_SE1625\\PRN231_HE160575_Project04\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\bsd03\\Desktop\\PRN231_PJV3\\prn231\\PRN231_HE160575_Project04\\wwwroot\\",
       "BasePath": "_content/PRN231_HE160575_Project04",
       "Pattern": "**"
     }

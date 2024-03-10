@@ -11,71 +11,72 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
     public class OrderFormModel : PageModel
     {
         
-        public static RentalRequest rentalRequest { get; set; } = new RentalRequest();
-        public static double total { get; set; }
+        public  RentalRequest rentalRequest { get; set; } = new RentalRequest();
+        public  double total { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public ErrorResponseModel MessageResponse { get; set; }
 
-        public void OnGet( DateTime? StartDate, DateTime? EndDate, int? id = -1)
+        public void OnGet(int HouseId = -1, int? id = null, DateTime? startDate = null, DateTime? endDate = null,double? total = null)
         {
-            startDate = rentalRequest.StartDate;
-            endDate = rentalRequest.EndDate;
-            rentalRequest.HouseId = (int)id;
+            rentalRequest.HouseId = HouseId;
+            if (id != null && startDate != null && endDate != null)
+            {
+                this.rentalRequest.HouseId = (int)id;
+                this.rentalRequest.StartDate = (DateTime)startDate;
+                this.rentalRequest.EndDate = (DateTime)endDate;
+                this.rentalRequest.total = (double)total;
+            }
         }
 
-        public async Task<IActionResult> OnPost(int button, DateTime startDate, DateTime endDate)
+        public async Task<IActionResult> OnPost(int button, RentalRequest rentalRequest)
         {
 
             if (button == 1)
             {
-                rentalRequest.StartDate = startDate;
-                rentalRequest.EndDate = endDate;
-                rentalRequest.total = total;
-                return await OnPostCalculatePriceAsync();
-            }
-            if (button == 2)
-            {
-                return await OnPostSubmit();
-            }
-          
-            return Content(startDate.ToLongDateString());
-            
-        }
-
-        public async Task<IActionResult> OnPostCalculatePriceAsync()
-        {
-            string retrievedToken = Request.Cookies["token"] ?? "token";
-            string link = "http://localhost:5059/api/BookingHistory/CalculatePrice";
-            using (HttpClient clien = new HttpClient())
-            {
-                clien.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(retrievedToken);
-                using (HttpResponseMessage res = await clien.PostAsJsonAsync(link, rentalRequest))
+                string retrievedToken = Request.Cookies["token"] ?? "token";
+                string link = "http://localhost:5059/api/BookingHistory/CalculatePrice";
+                using (HttpClient clien = new HttpClient())
                 {
-                    using (HttpContent content = res.Content)
+                    clien.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(retrievedToken);
+                    using (HttpResponseMessage res = await clien.PostAsJsonAsync(link, rentalRequest))
                     {
-                        if (res.IsSuccessStatusCode == true)
+                        using (HttpContent content = res.Content)
                         {
-                            string data = await content.ReadAsStringAsync();
-                            total = JsonConvert.DeserializeObject<double>(data);
-                            MessageResponse = new ErrorResponseModel();
-                            MessageResponse.setSucessMessage($"Get Total Rent Sucess");
-                            RedirectToPage("/Houses/HouseUpdateForm", new { id = rentalRequest.HouseId, startDate = rentalRequest.StartDate, endDate = rentalRequest.EndDate });
-                            //OnGet( rentalRequest.StartDate, rentalRequest.EndDate, rentalRequest.HouseId);
-                        }
-                        else
-                        {
-                            string data = await content.ReadAsStringAsync();
-                            ErrorResponseModel errorResponse = JsonConvert.DeserializeObject<ErrorResponseModel>(data);
-                            MessageResponse = errorResponse;
-                            return Page();
+                            if (res.IsSuccessStatusCode == true)
+                            {
+                                string data = await content.ReadAsStringAsync();
+                                total = JsonConvert.DeserializeObject<double>(data);
+                                MessageResponse = new ErrorResponseModel();
+                                MessageResponse.setSucessMessage($"Get Total Rent Sucess");
+                            }
+                            else
+                            {
+                                string data = await content.ReadAsStringAsync();
+                                ErrorResponseModel errorResponse = JsonConvert.DeserializeObject<ErrorResponseModel>(data);
+                                MessageResponse = errorResponse;
+                            }
                         }
                     }
                 }
-                return Page();
             }
+            //if (button == 2)
+            //{
+            //    return await OnPostSubmit();
+            //}
+
+
+            return  RedirectToPage("/Houses/OrderForm", new {
+              id = rentalRequest.HouseId, 
+              startDate = rentalRequest.StartDate, 
+              endDate = rentalRequest.EndDate ,
+              total = total
+          });
         }
-        public async Task<IActionResult> OnPostSubmit()
+
+        
+
+        public async Task OnPostSubmit()
         {
             string retrievedToken = Request.Cookies["token"] ?? "token";
             string link = "http://localhost:5059/api/BookingHistory/AddBookingHistory";
@@ -90,19 +91,15 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
                         {
                             MessageResponse = new ErrorResponseModel();
                             MessageResponse.setSucessMessage($"Add success");
-                            RedirectToPage("/Houses/HouseUpdateForm", new { id = rentalRequest.HouseId, startDate = rentalRequest.StartDate, endDate = rentalRequest.EndDate });
-                            //OnGet( rentalRequest.StartDate, rentalRequest.EndDate, rentalRequest.HouseId);
                         }
                         else
                         {
                             string data = await content.ReadAsStringAsync();
                             ErrorResponseModel errorResponse = JsonConvert.DeserializeObject<ErrorResponseModel>(data);
                             MessageResponse = errorResponse;
-                            return Page();
                         }
                     }
                 }
-                return Page();
             }
         }
         public class RentalRequest

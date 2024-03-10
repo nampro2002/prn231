@@ -125,7 +125,7 @@
             <div class="info">
                 <div>
                     <h2>Chủ trọ</h2>
-                    <p>User Name: @Model.HouseDetail.User.FullName</p>
+                    <p>User Name: @(Model.HouseDetail.User?.FullName ?? "Unknown")</p>
                 </div>
             </div>
 
