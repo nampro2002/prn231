@@ -27,7 +27,7 @@ namespace PRN231_HE160575_Project04
 
         public static string GenerateToken(int userId)
         {
-            const string SecretKey = "BACHSONGDUCHE160575";
+            const string SecretKey = "BACHSONGDUCHE160575BACHSONGDUCHE160575";
             // Tạo các claim cho token, bao gồm cả userId
             var claims = new[]
                 {

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7sdd3RQ8rfGB6CoBd1ijmexLQd/TCIcbnAGewB4uJ2x7EecuKSKhlJwYMXi2vTBLW8MueKuerpDY44aOpaBgYg==",
+  "dgSpecHash": "etqBAqDPsMJYE7SN+zesXx6siSYOiv1el5aLWoc9/DNFbZ2dtw0up7IP4kZSI2TVcBPkuVb8cxRYaNc1CFT5zQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\bsd03\\Desktop\\Project_PRN231\\prn231\\PRN231_HE160575_Project04_Client\\PRN231_HE160575_Project04_Client.csproj",
+  "projectFilePath": "C:\\Users\\bsd03\\Desktop\\PRN321_pj\\prn231\\PRN231_HE160575_Project04_Client\\PRN231_HE160575_Project04_Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bsd03\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],

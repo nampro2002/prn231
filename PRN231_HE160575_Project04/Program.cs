@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
@@ -10,13 +12,21 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 #region 1.Adding Controllers Service to Use Controller
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddOData(options =>
+{
+    options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null);
+});
+
 //MVC service
 builder.Services.AddControllersWithViews();
+
 #endregion
 #region 2.Setting DBcontext
 builder.Services.AddDbContext<PRN231_ProjectContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+
+
+
 #endregion
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<MyAuthorizationFilter>();

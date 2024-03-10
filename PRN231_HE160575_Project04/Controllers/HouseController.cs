@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PRN231_HE160575_Project04.ModelsV2;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace PRN231_HE160575_Project04.Controllers
 {
@@ -18,24 +19,16 @@ namespace PRN231_HE160575_Project04.Controllers
             _context = context;
         }
         [HttpGet("GetAllHouses")]
+        [EnableQuery]
         public IActionResult GetAllHouses()
         {
-            var options = new JsonSerializerOptions
-            {
-                // Sử dụng ReferenceHandler.Preserve để duy trì các tham chiếu
-                ReferenceHandler = ReferenceHandler.Preserve,
-                // Đặt mức độ sâu tối đa của đối tượng trong chuỗi JSON
-                MaxDepth = 32 // Tùy chỉnh mức độ sâu theo nhu cầu của bạn
-            };
-
-            string jsonString = JsonSerializer.Serialize(_context
+            return Ok(_context
                 .Houses
                 .Include(i => i.ProvinceCodeNavigation)
                 .Include(i => i.DistrictCodeNavigation)
                 .Include(i => i.WardCodeNavigation)
                 .Where(i => i.IsActive == true)
-                .ToList(), options);
-            return Ok(jsonString);
+                .ToList());
         }
         [HttpGet("GetAllProvinces")]
         public IActionResult GetAllProvinces()
