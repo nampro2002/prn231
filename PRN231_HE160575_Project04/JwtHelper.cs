@@ -9,6 +9,7 @@ namespace PRN231_HE160575_Project04
 {
     public static class JwtHelper
     {
+        //Gi do
         public static string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
