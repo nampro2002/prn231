@@ -40,8 +40,8 @@ namespace PRN231_HE160575_Project04_Client.Pages.Users
                         {
                             string data = await content.ReadAsStringAsync();
                             User = JsonConvert.DeserializeObject<User>(data);
-                            //MessageResponse = new ErrorResponse();
-                            //MessageResponse.setSucessMessage($"Get Houses Success !");
+                            MessageResponse = new ErrorResponseModel();
+                            MessageResponse.setSucessMessage($"Update User Success !");
                         }
                         else
                         {

@@ -130,27 +130,28 @@ namespace PRN231_HE160575_Project04.Controllers
                 return BadRequest("Invalid house price");
             }
             int numberOfDays = (int)(request.EndDate - request.StartDate).TotalDays;
-            decimal totalPrice = (house.Price / 30) * numberOfDays;
-            if (user.Balance < (double)totalPrice)
-            {
-                ModelState.AddModelError("Error", "User Balance is not enought");
-                var errorResponse = new ErrorResponse
-                {
-                    ErrorCode = 400,
-                    Errors = ModelState.ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray())
-                };
-                return BadRequest(errorResponse);
-            }
+            int totalPrice = (int)((house.Price / 30) * numberOfDays);
+            //if (user.Balance < (double)totalPrice)
+            //{
+            //    ModelState.AddModelError("Error", "User Balance is not enought");
+            //    var errorResponse = new ErrorResponse
+            //    {
+            //        ErrorCode = 400,
+            //        Errors = ModelState.ToDictionary(
+            //            kvp => kvp.Key,
+            //            kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray())
+            //    };
+            //    return BadRequest(errorResponse);
+            //}
 
             _context.BookingHistories.Add(new BookingHistory()
             {
                 UserId = request.UserId,
                 HouseId = request.HouseId,
                 BookingDate = request.StartDate,
+                Price = totalPrice.ToString(),
                 ExpirationDate = request.EndDate
-            });
+            }); 
             _context.SaveChanges();
             return Ok();
         }

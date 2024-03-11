@@ -30,7 +30,6 @@ namespace PRN231_HE160575_Project04.ModelsV2
         public string? WardCode { get; set; }
         public virtual District? DistrictCodeNavigation { get; set; }
         public virtual Province? ProvinceCodeNavigation { get; set; }
-        [JsonIgnore]
         public virtual User User { get; set; } = null!;
         public virtual Ward? WardCodeNavigation { get; set; }
         [JsonIgnore]

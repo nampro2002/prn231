@@ -89,8 +89,8 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
                         if (res.IsSuccessStatusCode == true)
                         {
                             MessageResponse = new ErrorResponseModel();
-                            MessageResponse.setSucessMessage($"Add success");
-                            RedirectToPage("/Houses/HouseUpdateForm", new { id = rentalRequest.HouseId, startDate = rentalRequest.StartDate, endDate = rentalRequest.EndDate });
+                            MessageResponse.setSucessMessage($"Order success");
+                            RedirectToPage("/Houses/Home");
                             //OnGet( rentalRequest.StartDate, rentalRequest.EndDate, rentalRequest.HouseId);
                         }
                         else
