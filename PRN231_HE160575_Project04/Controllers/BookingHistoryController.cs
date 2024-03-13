@@ -69,7 +69,7 @@ namespace PRN231_HE160575_Project04.Controllers
             House house = _context.Houses.SingleOrDefault(i => i.HouseId == request.HouseId);
             if (house == null)
             {
-                ModelState.AddModelError("Error", "Invalid house price");
+                ModelState.AddModelError("Error", "House not Found");
                 var errorResponse = new ErrorResponse
                 {
                     ErrorCode = 400,
@@ -160,7 +160,7 @@ namespace PRN231_HE160575_Project04.Controllers
         {
             public int UserId { get; set; }
             public int HouseId { get; set; }
-            public double total {  get; set; }
+            public double? total {  get; set; }
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
         }

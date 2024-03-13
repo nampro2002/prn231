@@ -26,9 +26,9 @@
                     <h1 id="mainContentTitle">Update House ID: @(Model.house != null ? Model.house.HouseId : 0)</h1>
 
                     <form style="margin:20px;" asp-page-handler="UpdateHouse" id="houseForm" method="post"></form>
-                    
-                    
-                    
+
+
+
                     <div class="mb-3">
                         <div class="form-group">
                             <label for="city">Thành phố</label>
@@ -36,7 +36,7 @@
                                 <option value="">Chọn tỉnh thành</option>
                                 @foreach (var item in Model.provinces)
                                 {
-                                    if (item.Code == @Model.house.ProvinceCode)
+                                    if (@Model.house != null && item.Code == @Model.house.ProvinceCode)
                                     {
                                         <option selected value="@item.Code">@item.Name</option>
                                     }
@@ -55,8 +55,7 @@
                                 <option value="">Chọn Quận</option>
                                 @foreach (var item in Model.districts)
                                 {
-
-                                    if (item.Code == @Model.house.DistrictCode)
+                                    if (@Model.house != null && item.Code == @Model.house.DistrictCode)
                                     {
                                         <option selected value="@item.Code">@item.Name</option>
                                     }
@@ -75,7 +74,7 @@
                                 <option value="">Chọn Phường/Xã</option>
                                 @foreach (var item in Model.wards)
                                 {
-                                    if (item.Code == @Model.house.WardCode)
+                                    if (@Model.house != null && item.Code == @Model.house.DistrictCode)
                                     {
                                         <option selected value="@item.Code">@item.Name</option>
                                     }
@@ -122,11 +121,11 @@
                         }
                     </script>
 
-                    
+
                     <div hidden class="mb-3">
                         <label for="firstName" class="form-label">Id</label>
                         <input form="houseForm" type="text" asp-for="house.HouseId" class="form-control" id="emailAddress">
-                        <input form="houseForm" value="@(Model.house != null ? Model.house.HouseId : 0)" name="HouseId" >
+                        <input form="houseForm" value="@(Model.house != null ? Model.house.HouseId : 0)" name="HouseId">
                     </div>
                     <div class="mb-3">
                         <label for="lastName" class="form-label">Title</label>

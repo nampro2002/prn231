@@ -125,12 +125,12 @@
             <div class="info">
                 <div>
                     <h2>Chủ trọ</h2>
-                    <p>User Name: @Model.HouseDetail.User.FullName</p>
+                    <p>User Name: @(Model.HouseDetail.User?.FullName ?? "Unknown")</p>
                 </div>
             </div>
 
             <div>
-                <a asp-route-id="@Model.HouseDetail.HouseId" asp-page="OrderForm" class="bt">Order</a>
+                <a asp-route-HouseId="@Model.HouseDetail.HouseId" asp-page="OrderForm" class="bt">Order</a>
             </div>
         </div>
        
