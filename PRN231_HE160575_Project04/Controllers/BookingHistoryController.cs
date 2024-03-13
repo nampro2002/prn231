@@ -17,26 +17,32 @@ namespace PRN231_HE160575_Project04.Controllers
         {
             _context = context;
         }
-
+        [ServiceFilter(typeof(MyAuthorizationFilter))]
         [HttpGet("GetAllBookingHistories")]
         public IActionResult GetAllBookingHistories()
         {
-            var options = new JsonSerializerOptions
+            User u = new User();
+            if (HttpContext.Items.TryGetValue("UserId", out var userIdObj) && userIdObj is int userId)
             {
-                // Sử dụng ReferenceHandler.Preserve để duy trì các tham chiếu
-                ReferenceHandler = ReferenceHandler.Preserve,
-                // Đặt mức độ sâu tối đa của đối tượng trong chuỗi JSON
-                MaxDepth = 32 // Tùy chỉnh mức độ sâu theo nhu cầu của bạn
-            };
+                 u = _context.Users.SingleOrDefault(i => i.UserId == userId);
+            }
+                var options = new JsonSerializerOptions
+                {
+                    // Sử dụng ReferenceHandler.Preserve để duy trì các tham chiếu
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                    // Đặt mức độ sâu tối đa của đối tượng trong chuỗi JSON
+                    MaxDepth = 32 // Tùy chỉnh mức độ sâu theo nhu cầu của bạn
+                };
 
-            var data = _context.BookingHistories.Include(i => i.User)
-                .Include(i => i.House).ToList();
-            //string jsonString = JsonSerializer.Serialize(_context
-            //    .BookingHistories
-            //    .Include(i => i.User)
-            //    .Include(i => i.House)
-            //    .ToList(), options);
-            return Ok(data);
+                var data = _context.BookingHistories.Where(i => i.UserId == u.UserId).Include(i => i.User)
+                    .Include(i => i.House).ToList();
+                //string jsonString = JsonSerializer.Serialize(_context
+                //    .BookingHistories
+                //    .Include(i => i.User)
+                //    .Include(i => i.House)
+                //    .ToList(), options);
+                return Ok(data);
+            
         }
         [HttpPost]
         [Route("CalculatePrice")]
@@ -86,7 +92,7 @@ namespace PRN231_HE160575_Project04.Controllers
 
             return Ok(totalPrice);
         }
-
+        [ServiceFilter(typeof(MyAuthorizationFilter))]
         [HttpPost("AddBookingHistory")]
         public IActionResult AddBookingHistory(RentalRequest request)
         {
@@ -119,15 +125,39 @@ namespace PRN231_HE160575_Project04.Controllers
            
             if (request == null)
             {
-                return BadRequest("Invalid request");
+                ModelState.AddModelError("Error", "Invalid request");
+                var errorResponse = new ErrorResponse
+                {
+                    ErrorCode = 400,
+                    Errors = ModelState.ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray())
+                };
+                return BadRequest(errorResponse);
             }
             if (request.StartDate >= request.EndDate)
             {
-                return BadRequest("Invalid start or end date");
+                ModelState.AddModelError("Error", "Invalid start or end date");
+                var errorResponse = new ErrorResponse
+                {
+                    ErrorCode = 400,
+                    Errors = ModelState.ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray())
+                };
+                return BadRequest(errorResponse);
             }
             if (house == null)
             {
-                return BadRequest("Invalid house price");
+                ModelState.AddModelError("Error", "Invalid house price");
+                var errorResponse = new ErrorResponse
+                {
+                    ErrorCode = 400,
+                    Errors = ModelState.ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray())
+                };
+                return BadRequest(errorResponse);
             }
             int numberOfDays = (int)(request.EndDate - request.StartDate).TotalDays;
             int totalPrice = (int)((house.Price / 30) * numberOfDays);

@@ -34,14 +34,14 @@
 
 <link href="~/css/app.css" rel="stylesheet" />
 <link href="~/css/login.css" rel="stylesheet" />
-<form method="post">
+<form method="post" >
     <div class="mainContainer">
         <div class="titleContainer">
             <div>Register</div>
         </div>
         <div class="inputContainer">
             Chose your Avatar
-            <img id="Avatar" src="https://picsum.photos/200/300" alt="User Avatar" class="avatar">
+            <img id="Avatar" src="https://picsum.photos/200/300" alt="User Avatar" class="avatar" style="max-width:200px">
             <label for="fileInput" class="fileInputLabel">Choose a file</label>
             <input id="fileInput" type="file" accept="image/*" onchange="encodeImageFileAsURL(this)" style="display: none;">
             <input hidden id="AvatarInput" type="text" asp-for="UserInfo.Avatar" readonly>

@@ -197,6 +197,7 @@ namespace PRN231_HE160575_Project04.Controllers
             toUpdateUser.Address = user.Address;
             toUpdateUser.Avatar = user.Avatar;
             toUpdateUser.IsVerified = false;
+            toUpdateUser.IsActived = true;
             toUpdateUser.Roll = user.Roll;
             _context.Users.Add(toUpdateUser);
             _context.SaveChanges();
@@ -333,7 +334,7 @@ namespace PRN231_HE160575_Project04.Controllers
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("BACHSONGDUCHE160575"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("BACHSONGDUCHE160575BACHSONGDUCHE160575"))
                 };
 
                 ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(JWTstring, validationParameters, out SecurityToken validatedToken);
@@ -416,7 +417,7 @@ namespace PRN231_HE160575_Project04.Controllers
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("BACHSONGDUCHE160575"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("BACHSONGDUCHE160575BACHSONGDUCHE160575"))
                 };
 
                 ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(JWTstring, validationParameters, out SecurityToken validatedToken);

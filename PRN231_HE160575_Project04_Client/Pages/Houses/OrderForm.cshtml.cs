@@ -20,8 +20,21 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
         public DateTime endDate { get; set; }
         public ErrorResponseModel MessageResponse { get; set; }
 
-        public void OnGet(int HouseId, int? id = null, DateTime? startDate = null, DateTime? endDate = null,double? total = null)
+        public void OnGet(int HouseId, int? id = null, DateTime? startDate = null, DateTime? endDate = null,double? total = null, string? message =null)
         {
+            if(message != null)
+            {
+                MessageResponse = new ErrorResponseModel();
+                if (message.Contains("Sucess"))
+                {
+                   
+                    MessageResponse.setSucessMessage(message);
+                }
+                else
+                {
+                    MessageResponse.setFailMessage(message);
+                }
+            }
             rentalRequest.HouseId = HouseId;
             if (id != null && startDate != null && endDate != null)
             {
@@ -34,7 +47,7 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
 
         public async Task<IActionResult> OnPost(int button, RentalRequest rentalRequest)
         {
-
+            String message = null;
             if (button == 1)
             {
                 string retrievedToken = Request.Cookies["token"] ?? "token";
@@ -52,12 +65,14 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
                                 total = JsonConvert.DeserializeObject<double>(data);
                                 MessageResponse = new ErrorResponseModel();
                                 MessageResponse.setSucessMessage($"Get Total Rent Sucess");
+                                message = "Get Total Rent Sucess";
                             }
                             else
                             {
                                 string data = await content.ReadAsStringAsync();
                                 ErrorResponseModel errorResponse = JsonConvert.DeserializeObject<ErrorResponseModel>(data);
                                 MessageResponse = errorResponse;
+                                message = "error while get total rent";
                             }
                         }
                     }
@@ -65,7 +80,7 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
             }
             if (button == 2)
             {
-                 await OnPostSubmit(rentalRequest);
+                 return  await OnPostSubmit(rentalRequest);
             }
 
 
@@ -73,8 +88,9 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
               id = rentalRequest.HouseId, 
               startDate = rentalRequest.StartDate, 
               endDate = rentalRequest.EndDate ,
-              total = total
-          });
+              total = total,
+              message = message
+            });;
         }
 
         public static int GetUserIdFromJwtToken(string token)
@@ -96,7 +112,7 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
             return userId;
         }
 
-        public async Task OnPostSubmit(RentalRequest rentalRequest)
+        public async Task<IActionResult> OnPostSubmit(RentalRequest rentalRequest)
         {
             string retrievedToken = Request.Cookies["token"] ?? "token";
             int id = GetUserIdFromJwtToken(retrievedToken);
@@ -113,6 +129,7 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
                         {
                             MessageResponse = new ErrorResponseModel();
                             MessageResponse.setSucessMessage($"Add success");
+                           
                         }
                         else
                         {
@@ -123,6 +140,7 @@ namespace PRN231_HE160575_Project04_Client.Pages.Houses
                     }
                 }
             }
+            return Page();
         }
         public class RentalRequest
         {
